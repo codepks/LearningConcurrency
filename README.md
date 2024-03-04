@@ -52,8 +52,77 @@ int main() {
 
     return 0;
 }
+
+OUTPUT :
+Produced: 1
+Produced: 2
+Produced: 3
+Produced: 4
+Produced: 5
+Consumed: 1
+Consumed: 2
+Consumed: 3
+Consumed: 4
+Consumed: 5
+
 ```
 
-Working of cv.wait()
- cv.notify keeps the lock in released state or basically doesn't acquire lock until the condition is satified.
- Till then it is in sleep mode.
+*Working of cv.wait()*
+    cv.wait keeps the lock in released state or basically doesn't acquire lock until the condition is satified. 
+    Till then it is in sleep mode.
+*Working of  cv.notify()*
+    cv.notify wakes up cv.wait, but it is a good practice to unlock the thread before we let the wait thread acquire the lock.
+
+### More Synchronous
+
+```
+class Producer {
+public:
+    void producer() {
+        for (int i = 1; i <= 5; ++i) {
+            std::unique_lock<std::mutex> lock(mtx);
+            buffer.push(i);
+            std::cout << "Produced: " << i << std::endl;
+
+            //we must unlock so that cv.nofity actually wakes up the the thread wait
+            lock.unlock();        
+
+            cv.notify_one();
+
+            //make sure we are waiting till the producer produces another data
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
+    }
+};
+
+class Consumer {
+public:
+    void consumer() {
+        while (true) {
+            std::unique_lock<std::mutex> lock(mtx);
+            cv.wait(lock, [] { return !buffer.empty(); });
+            int data = buffer.front();
+            buffer.pop();
+            std::cout << "Consumed: " << data << std::endl;
+            lock.unlock();
+
+            //removed sleep so that the data produced by the Producer is quickly consumed
+        }
+    }
+};
+
+
+OUTPUT:
+Produced: 1
+Consumed: 1
+Produced: 2
+Consumed: 2
+Produced: 3
+Consumed: 3
+Produced: 4
+Consumed: 4
+Produced: 5
+Consumed: 5
+
+```
+
