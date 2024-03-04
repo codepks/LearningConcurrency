@@ -6,59 +6,50 @@ Statement : We will take in some values , accumulate in a queue buffer and show 
 
 ```
 #include <iostream>
-#include <vector>
 #include <queue>
-#include <future>
+#include <thread>
 #include <mutex>
 #include <condition_variable>
+#include <future>
 
+std::queue<int> buffer;
+std::mutex mtx;
 std::condition_variable cv;
-std::mutex mtx_;
 
-//Producer object is responsible for producing values
-class Producer{
+class Producer {
 public:
-
-	void produceBufferValues(std::queue<int> &producedQueue)	{
-		std::vector<int> vecVevalue{1, 2, 3, 4, 56, 7, 8, 9, 11, 12, 13, 14};
-		for (size_t i = 0; i < vecVevalue.size(); i++)		{
-			std::unique_lock<std::mutex> lock(mtx_);
-			producedQueue.push(vecVevalue[i]);
-
-			if (producedQueue.size() >= 10)
-				cv.notify_one();
-		}
-	}
+    void producer() {
+        for (int i = 1; i <= 5; ++i) {
+            std::lock_guard<std::mutex> lock(mtx);
+            buffer.push(i);
+            std::cout << "Produced: " << i << std::endl;
+            cv.notify_one();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
+    }
 };
 
-
-class Consumer{
+class Consumer {
 public:
-	void consumeBufferValues(std::queue<int> &consumedQueue)	{
-		std::unique_lock<std::mutex> lock(mtx_);
-		
-		cv.wait(lock, [&consumedQueue]() {return !consumedQueue.empty(); });
-
-		while (!consumedQueue.empty())		{
-			std::cout << consumedQueue.front() << std::endl;
-			consumedQueue.pop();
-		}
-	}
+    void consumer() {
+        while (true) {
+            std::unique_lock<std::mutex> lock(mtx);
+            cv.wait(lock, [] { return !buffer.empty(); });
+            int data = buffer.front();
+            buffer.pop();
+            std::cout << "Consumed: " << data << std::endl;
+            lock.unlock();
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+    }
 };
 
-int main(){
-	//Make a Producer object
-	Producer producerObject;
-	std::queue<int> dataQueue;
+int main() {
+    Producer producer;
+    Consumer consumer;
+    std::future<void> future1 = std::async(std::launch::async, &Producer::producer, &producer);
+    std::future<void> future2 = std::async(std::launch::async, &Consumer::consumer, &consumer);
 
-	//Run the producerObject's produceBufferValues function in a thread
-	std::future<void> future_ = std::async(std::launch::async,
-		&Producer::produceBufferValues, &producerObject, std::ref(dataQueue));
-
-	Consumer consumerObject;
-	std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-	//Make a Consumer object
-	consumerObject.consumeBufferValues(dataQueue);
+    return 0;
 }
 ```
