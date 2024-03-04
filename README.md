@@ -53,3 +53,7 @@ int main() {
     return 0;
 }
 ```
+
+Working of cv.notify()
+ cv.notify keeps the lock in released state or basically doesn't acquire lock until the condition is satified.
+ Till then it is in sleep mode.
