@@ -204,19 +204,22 @@ void method()
 }
 ```
 
- ## Waiting, Killing, and Detaching
+## Waiting, Killing, and Detaching
 
-## Why join() <br>
+### Why join() <br>
 - join() blocks the the current thread until worker threa's job is completed.
 - In C++ one must specify what happens to a thread when it goes out of scope.
 - It is safe to either detach them or wait for their completion by *joining* them.
-<br> <br>
+
+<br>
 One must make sure that **its destructor is not called when it is still joinable**( joinable means it is not detached or killed).
 
 <br> 
-If you have not detached or joined then it will call **std::terminate** <br>
+If you have not detached or joined then it will call ```std::terminate``` <br>
 source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
 
 
+### Kill a thread
 
+```std::terminate()``` can kill entire program process, better use ```return```
 
