@@ -283,6 +283,7 @@ The non-atomic counter is 69696
 atomic_bool        std::atomic<bool>
 atomic_char        std::atomic<char>
 ```
+
 **Operational functions**
 
 ```
@@ -293,3 +294,108 @@ std::atomic class, such as load(), store(), exchange(), compare_exchange_weak(),
 
 - Atomic variables support different memory orderings, which specify the ordering constraints for memory operations involving the atomic variable.
 - The memory orderings include memory_order_relaxed, memory_order_acquire, memory_order_release, memory_order_acq_rel, and memory_order_seq_cst.
+
+
+# Mutex
+
+- They are there to prevent race conditions
+- Overuse of locks can lead to deadlock situations
+
+## Avoiding Deadlock
+Let deadlock occur, then do preemption to handle it once occurred.
+
+## Using locks
+
+This code below is not a correct way but using using unique_lock and lock_guards is always better as they follow RAII.
+```
+std::mutex my_mutex;
+
+thread_function(){
+  my_mutex.lock(); // Acquire lock
+  // Do some non-thread safe stuff...
+  my_mutex.unlock(); // Release lock
+}
+```
+
+# Lock_Guard Types
+
+## lock_guard
+Releases lock once it goes out of scope.
+```
+std::mutex my_mutex;
+ 
+thread_function()
+{
+  std::lock_guard<std::mutex> guard(my_mutex); // Acquire lock
+  // Do some non-thread safe stuff...
+}
+```
+
+## scoped_lock
+From C++ 17 <br>
+It can take multiple mutexes
+
+```
+std::scoped_lock<std::mutex, std::mutex> guard(mutex_1, mutex_2);
+```
+
+## unique_lock
+
+By default behaves as lock_guard but comes with various functionalities
+
+```
+std::unique_lock<std::mutex> guard(my_mutex);
+
+// Check if guard owns lock (either works)
+guard.owns_lock();
+bool(guard);
+
+// Return function without releasing the lock
+return std::move(guard);
+
+// Release lock before destruction
+guard.unlock();
+```
+
+**defering**
+
+```
+// Initialise the lock guard, but don't actually lock yet
+std::unique_lock<std::mutex> guard(mutex_1, std::defer_lock);
+
+// Now you can do some of the following!
+guard.lock(); // Lock now!
+guard.try_lock(); // Won't block if it can't acquire
+guard.try_lock_for(); // Only for timed_mutexes
+guard.try_lock_until(); // Only for timed_mutexes
+```
+
+## share_lock 
+
+Just like unique lock except that it works for **shared_mutex**
+
+```
+std::shared_lock my_mutex;
+std::shared_lock<std::shared_mutex> guard(my_mutex);
+
+// Check if guard owns lock (either works)
+guard.owns_lock();
+bool(guard);
+
+// Return function without releasing the lock
+return std::move(guard);
+
+// Release lock before destruction
+guard.unlock();
+```
+
+```
+// Initialise the lock guard, but don't actually lock yet
+std::shared_lock<std::shared_mutex> guard(mutex_1, std::defer_lock);
+
+// Now you can do some of the following!
+guard.lock(); // Lock now!
+guard.try_lock(); // Won't block if it can't acquire
+guard.try_lock_for(); // Only for timed_mutexes
+guard.try_lock_until(); // Only for timed_mutexes
+```
