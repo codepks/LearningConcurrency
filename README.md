@@ -129,17 +129,17 @@ Consumed: 5
 
 ## Concurrency and Parallelism
 
-**Concurrency**
-When tasks are run simultaneously but not necessarily at the same physical time. <br>
-It is achieved through multithreading or asynchronous programming.<br>
-It can be done on a single core or multicore processor.<br>
-*Example* : It can be achieved through threads, async, mutexes<br>
+**Concurrency** <br>
+- When tasks are run simultaneously but not necessarily at the same physical time. <br>
+- It is achieved through multithreading or asynchronous programming.<br>
+- It can be done on a single core or multicore processor.<br>
+- *Example* : It can be achieved through threads, async, mutexes<br>
 
-**Parallelism**
-Running tasks simulataneously on multiple cores or multiple processors.<br>
-Parallelism requires hardware support in form of multiple cores or multiple processors.<br>
-Here we are dividing tasks into subtasks and execute concurrently on multiple processors.<br>
-We exploit the computation power of the processors fully here.<br>
-*Example* : Using OpenMP parallel programming:<br>
-https://www.geeksforgeeks.org/introduction-to-parallel-programming-with-openmp-in-cpp/
+**Parallelism**<br>
+- Running tasks simulataneously on multiple cores or multiple processors.<br>
+- Parallelism requires hardware support in form of multiple cores or multiple processors.<br>
+- Here we are dividing tasks into subtasks and execute concurrently on multiple processors.<br>
+- We exploit the computation power of the processors fully here.<br>
+- *Example* : Using OpenMP parallel programming:<br>
+- https://www.geeksforgeeks.org/introduction-to-parallel-programming-with-openmp-in-cpp/
 
