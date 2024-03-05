@@ -458,3 +458,8 @@ Plain one
 **std::timed_mutex**
 Used with ```try_lock_for()``` and ```try_lock_until()```
 
+**std::recursive_timed_mutex**
+
+**std::recursive_timed_mutex**
+
+**std::shared_timed_mutex**
