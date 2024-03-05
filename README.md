@@ -492,10 +492,10 @@ For signal even handling
 
 note: mutex unlock takes time
 
-**Sample Code**
+**Sample Code** <br>
 Check producer and Consumer code in the top
 
-**Avoid Spurious wake ups**
+**Avoid Spurious wake ups**<br>
 Use lamdas
 ```
 // If we want to just check a bool called condition we need to use lambdas
