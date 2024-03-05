@@ -486,8 +486,8 @@ For signal even handling
 note: mutex unlock takes time
 
 **Example Flow**
-> Thread acquires lock
-> Check if condition is false
-> If false, call wait(), which releases the lock and blocks the thread until the condition is fulfilled
-> If a condition is fulfilled, the condition variable must be notified before it can check
-> Once the condition check succeeds, thread reacquires lock and continues execution
+> - Thread acquires lock
+> - Check if condition is false
+> - If false, call wait(), which releases the lock and blocks the thread until the condition is fulfilled
+> - If a condition is fulfilled, the condition variable must be notified before it can check
+> - Once the condition check succeeds, thread reacquires lock and continues execution
