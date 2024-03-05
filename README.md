@@ -498,6 +498,22 @@ Check producer and Consumer code in the top
 **Avoid Spurious wake ups**<br>
 Use lamdas
 ```
-// If we want to just check a bool called condition we need to use lambdas
+//If we want to just check a bool called condition we need to use lambdas
 condition_var.wait(guard, [](){return condition == true;});
 ```
+
+# Task based parallelism
+
+- Task based parallelism is handled via ```std::async``` <br> 
+- The main benefit of this form of parallelism is the great ease in getting returned values from tasks that you start
+- Before, when using ```std::thread``` ,one needs to pass variables by reference
+
+## Threads vs Tasks
+
+Use threads if:
+- You need tight control over mutexes
+- Need to run long-lived, complex tasks
+
+Use tasks if:
+- You want fairly simple code and don't care for managing threads
+- Are running short tasks
