@@ -476,6 +476,13 @@ Used with ```try_lock_for()``` and ```try_lock_until()```
 # Condition Variables
 For signal even handling
 
+**Example Flow**
+> - Thread acquires lock
+> - Check if condition is false
+> - If false, call wait(), which releases the lock and blocks the thread until the condition is fulfilled
+> - If a condition is fulfilled, the condition variable must be notified before it can check
+> - Once the condition check succeeds, thread reacquires lock and continues execution
+
 - Condition variable uses unique_lock. It can signal when lock is released
 -  I think it's a good rule of thumb to avoid holding the lock associated with a condition variable while calling notify_one() or notify_all().
 -  Keep in mind that the lock() call in the while loop is necessary at some point, because the lock needs to be held during the while (!done) loop condition check. But it doesn't need to be held for the call to notify_one().
@@ -485,9 +492,12 @@ For signal even handling
 
 note: mutex unlock takes time
 
-**Example Flow**
-> - Thread acquires lock
-> - Check if condition is false
-> - If false, call wait(), which releases the lock and blocks the thread until the condition is fulfilled
-> - If a condition is fulfilled, the condition variable must be notified before it can check
-> - Once the condition check succeeds, thread reacquires lock and continues execution
+**Sample Code**
+Check producer and Consumer code in the top
+
+**Avoid Spurious wake ups**
+Use lamdas
+```
+// If we want to just check a bool called condition we need to use lambdas
+condition_var.wait(guard, [](){return condition == true;});
+```
