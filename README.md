@@ -237,3 +237,6 @@ source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-do
 - It is difficult to debug them as there is no return value from a detached thread.
 
 
+## Data Race
+
+Reading is always thread safe compared but writing is not.
