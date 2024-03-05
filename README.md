@@ -450,3 +450,11 @@ int main() {
 }
 ```
 
+# Mutex Types
+
+**std::mutex**
+Plain one
+
+**std::timed_mutex**
+Used with ```try_lock_for()``` and ```try_lock_until()```
+
