@@ -143,3 +143,8 @@ Consumed: 5
 - *Example* : Using OpenMP parallel programming:<br>
 - https://www.geeksforgeeks.org/introduction-to-parallel-programming-with-openmp-in-cpp/
 
+
+**Maximum number of threads for a given hardware**
+unsigned int c = std::thread::hardware_concurrency();
+
+Creating more threads than these doesn't benefit anyone.
