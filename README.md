@@ -216,6 +216,7 @@ One must make sure that **its destructor is not called when it is still joinable
 
 <br> 
 If you have not detached or joined then it will call std::terminate <br>
+Most commonly, you should use join to ensure proper thread termination and resource cleanup, especially for critical tasks. <br>
 source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
 
 
@@ -223,3 +224,14 @@ source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-do
 
 ```std::terminate()``` can kill entire program process, better use ```return```
 
+### Detach a thread
+**What Happens** <br>
+- When you detach a thread the program no longer manages its lifecycle.
+- Useful when threre is some background task supposed to run and requires no interaction with main thread
+
+**Usages**
+- It is often used to avoid deadlocks when main function needs to continue doing its operation without waiting for a thread operation.
+
+**Drawbacks**
+- Once a thread is detached its resource cleanup cannot be guaranteed leading to unexpected behaviour.
+- It is difficult to debug them as there is no return value from a detached thread.
