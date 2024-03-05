@@ -236,6 +236,15 @@ source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-do
 - Once a thread is detached its resource cleanup cannot be guaranteed leading to unexpected behaviour.
 - It is difficult to debug them as there is no return value from a detached thread.
 
+```
+void turnOnSimulator() {
+        std::thread simulatorThread(&TemperatureSensorSimulator::generateTemperatures, this);
+        simulatorThread.detach();  // Detach the thread to run independently
+    }
+```
+- Detaching the thread allows it to run independently even after the main function finishes execution. This means the generateTemperatures method will continue generating temperatures in the background, and the main thread can proceed without waiting for the thread to finish.
+
+- If we don't use detach the main thread will will call ```.join()``` implicitly at the end of ```turnOnSimulator()``` which will main thread to wait for thread to finish
 
 ## Data Race
 
