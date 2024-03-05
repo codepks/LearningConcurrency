@@ -245,7 +245,8 @@ Result is inconsistent. Put lock to get consistent results.
 ## Atomic Operation
 - It guarantees that no race condition will occur
 - Should only be used when we need them
-
+  
+### Sample Code
 ```
 std::atomic_int acnt;
 int cnt;
@@ -272,3 +273,23 @@ Possible output:
 The atomic counter is 100000
 The non-atomic counter is 69696
 ```
+
+## Atomic Types
+
+**Types**
+```
+// source : https://en.cppreference.com/w/cpp/atomic/atomic
+
+atomic_bool        std::atomic<bool>
+atomic_char        std::atomic<char>
+```
+**Operational functions**
+
+```
+std::atomic class, such as load(), store(), exchange(), compare_exchange_weak(), compare_exchange_strong(), fetch_add(), fetch_sub(), etc
+```
+
+**Memory ordering**
+
+- Atomic variables support different memory orderings, which specify the ordering constraints for memory operations involving the atomic variable.
+- The memory orderings include memory_order_relaxed, memory_order_acquire, memory_order_release, memory_order_acq_rel, and memory_order_seq_cst.
