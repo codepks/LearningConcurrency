@@ -127,7 +127,7 @@ Consumed: 5
 ```
 
 
-## Concurrency and Parallelism <br>
+# Concurrency and Parallelism <br>
 source : https://github.com/methylDragon/coding-notes/blob/master/C++/07%20C++%20-%20Threading%20and%20Concurrency.md
 
 **Concurrency** <br>
@@ -150,7 +150,7 @@ unsigned int c = std::thread::hardware_concurrency();
 
 Creating more threads than these doesn't benefit anyone.
 
-## Creating Threads
+# Creating Threads
 
 There are several ways to create a thread:
 - Using a function pointer
@@ -204,9 +204,9 @@ void method()
 }
 ```
 
-## Waiting, Killing, and Detaching
+# Waiting, Killing, and Detaching
 
-### Why join() <br>
+## Why join() <br>
 - join() blocks the the current thread until worker threa's job is completed.
 - In C++ one must specify what happens to a thread when it goes out of scope.
 - It is safe to either detach them or wait for their completion by *joining* them.
@@ -220,11 +220,11 @@ Most commonly, you should use join to ensure proper thread termination and resou
 source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
 
 
-### Kill a thread
+## Kill a thread
 
 ```std::terminate()``` can kill entire program process, better use ```return```
 
-### Detach a thread
+## Detach a thread
 **What Happens** <br>
 - When you detach a thread the program no longer manages its lifecycle.
 - Useful when threre is some background task supposed to run and requires no interaction with main thread
@@ -235,3 +235,5 @@ source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-do
 **Drawbacks**
 - Once a thread is detached its resource cleanup cannot be guaranteed leading to unexpected behaviour.
 - It is difficult to debug them as there is no return value from a detached thread.
+
+
