@@ -399,3 +399,53 @@ guard.try_lock(); // Won't block if it can't acquire
 guard.try_lock_for(); // Only for timed_mutexes
 guard.try_lock_until(); // Only for timed_mutexes
 ```
+
+# Lock Types
+
+## Exclusive lock
+
+```
+std::mutex
+```
+Exclusive locks blocks both read and write. Only one thread can access a resource at a time.
+
+## Shared Lock
+
+```
+std::shared_mutex
+
+Multiple locks can acquire access but only for read access. In order to write over the resource one needs to have exclusive lock instead.
+
+code sample
+```
+std::shared_mutex mtx; // Shared mutex object
+
+// Function to simulate reading data
+void readData() {
+  mtx.lock_shared(); // Acquire a shared lock
+  std::cout << "Reading data..." << std::endl;
+  std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Simulate reading time
+  mtx.unlock_shared(); // Release the shared lock
+}
+
+// Function to simulate writing data
+void writeData() {
+  mtx.lock(); // Acquire an exclusive lock
+  std::cout << "Writing data..." << std::endl;
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Simulate writing time
+  mtx.unlock(); // Release the exclusive lock
+}
+
+int main() {
+  std::thread t1(readData);
+  std::thread t2(readData);
+  std::thread t3(writeData);
+
+  t1.join();
+  t2.join();
+  t3.join();
+
+  return 0;
+}
+```
+
