@@ -413,10 +413,11 @@ Exclusive locks blocks both read and write. Only one thread can access a resourc
 
 ```
 std::shared_mutex
+```
 
 Multiple locks can acquire access but only for read access. In order to write over the resource one needs to have exclusive lock instead.
 
-code sample
+
 ```
 std::shared_mutex mtx; // Shared mutex object
 
