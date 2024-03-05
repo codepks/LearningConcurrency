@@ -127,7 +127,8 @@ Consumed: 5
 ```
 
 
-## Concurrency and Parallelism
+## Concurrency and Parallelism <br>
+source : https://github.com/methylDragon/coding-notes/blob/master/C++/07%20C++%20-%20Threading%20and%20Concurrency.md
 
 **Concurrency** <br>
 - When tasks are run simultaneously but not necessarily at the same physical time. <br>
@@ -148,3 +149,32 @@ Consumed: 5
 unsigned int c = std::thread::hardware_concurrency();
 
 Creating more threads than these doesn't benefit anyone.
+
+## Creating Threads
+
+There are several ways to create a thread:
+- Using a function pointer
+- Using a lambda function
+- Using a functor
+
+## this_thread
+
+Refers to the current thread:
+
+```
+std::this_thread::get_id();
+std::this_thread::yield();
+std::this_thread::sleep_for(std::chrono::seconds(1));
+std::this_thread::sleep_until(time_point);
+```
+
+
+
+
+
+
+
+
+
+
+
