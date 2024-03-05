@@ -168,8 +168,41 @@ std::this_thread::sleep_for(std::chrono::seconds(1));
 std::this_thread::sleep_until(time_point);
 ```
 
+## Pass by reference
 
+You need to explicitly wrap the arguments in std::ref() to pass by reference.
 
+```
+void ref_function(int &a, int b) {}
+int val;
+std::thread ref_function_thread(ref_function, std::ref(val), 2);
+```
+*Because the thread functions can't return anything, passing by reference is the only way to properly get data out of a thread without using global variables*
+
+## thread_local
+
+source : https://www.geeksforgeeks.org/thread_local-storage-in-cpp-11/
+thread_local are like static variables for threads and exists till the threads exists.
+
+better usage: 
+```
+// Suppose this is your thread function
+void method()
+{
+  static int var = 0;
+  var++;
+}
+```
+In the code above var will increment with the same instance across all the threads.
+But if you want to have your own copy of static_variable that is local to a thread then one should use the function below:
+
+```
+void method()
+{
+  thread_local int var = 0;
+  var++;
+}
+```
 
 
 
