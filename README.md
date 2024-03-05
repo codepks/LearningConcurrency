@@ -215,7 +215,7 @@ void method()
 One must make sure that **its destructor is not called when it is still joinable**( joinable means it is not detached or killed).
 
 <br> 
-If you have not detached or joined then it will call ```std::terminate``` <br>
+If you have not detached or joined then it will call **std::terminate** <br>
 source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
 
 
