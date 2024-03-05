@@ -212,8 +212,9 @@ void method()
 - It is safe to either detach them or wait for their completion by *joining* them.
 <br> <br>
 One must make sure that **its destructor is not called when it is still joinable**( joinable means it is not detached or killed).
-<br> <br> 
-If you have not detached or joined then it will call **std::terminate** .
+
+<br> 
+If you have not detached or joined then it will call **std::terminate** <br>
 source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
 
 
