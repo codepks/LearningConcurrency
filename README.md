@@ -463,3 +463,15 @@ Used with ```try_lock_for()``` and ```try_lock_until()```
 **std::recursive_timed_mutex**
 
 **std::shared_timed_mutex**
+
+# Condition Variables
+For signal even handling
+
+- Condition variable uses unique_lock. It can signal when lock is released
+-  I think it's a good rule of thumb to avoid holding the lock associated with a condition variable while calling notify_one() or notify_all().
+-  Keep in mind that the lock() call in the while loop is necessary at some point, because the lock needs to be held during the while (!done) loop condition check. But it doesn't need to be held for the call to notify_one().
+
+> source
+> https://stackoverflow.com/questions/17101922/do-i-have-to-acquire-lock-before-calling-condition-variable-notify-one
+
+note: mutex unlock takes time
