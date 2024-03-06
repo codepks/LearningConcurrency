@@ -520,6 +520,8 @@ Use tasks if:
 
 # Promises and Futures
 
+They are introduced more likely because of the issue of return value with ```std::thread```
+
 ## Futures
 - future variables are class template that will asssigned value in future and values to it are acessed via .get() . 
 - .get() function blocks the current thread until the value is retrieved
@@ -528,7 +530,7 @@ Use tasks if:
 ## Shared Futures
 
 A std::shared_future works the same way, except it is copyable. Which means that multiple threads are allowed to wait for the same shared state. <br>
-They are introduced more likely because of the issue of return value with ```std::thread```
+
 
 ## Promises
 
