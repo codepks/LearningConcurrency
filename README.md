@@ -357,6 +357,75 @@ thread_function(){
   my_mutex.unlock(); // Release lock
 }
 ```
+### Multiple locks
+
+**SAME LOCK**
+
+```
+std::mutex mx1;
+int val = 0;
+
+void function1(){
+	std::unique_lock<std::mutex> ul(mx1);
+	while (val < 20)	{
+		std::cout << val << "t1 ";
+		val++;
+	}
+	ul.unlock();
+}
+```
+```
+void function2(){
+	std::unique_lock<std::mutex> ul(mx1);
+	while (val < 20)	{
+		std::cout << val << "t2 ";
+		val++;
+	}
+	ul.unlock();
+}
+```
+
+When you put same lock in the two function that is std::mutex mx1, then it is about which thread acquires the lock first. Only after one thread finishes, it unlocks and lets other thread acquire the lock.
+
+so the output could be <br>
+00t1 2t1 3t1.... 19t1  <br>
+OR <br>
+00t2 2t2 3t2.... 19t2 <br>
+
+
+
+**DIFFERENT LOCKS**
+If two different locks are put then both the threads acquire their respective locks and keep running the function until the condition is met.
+
+```
+std::mutex mx1;
+std::mutex mx2;
+int val = 0;
+
+void function1(){
+	std::unique_lock<std::mutex> ul(mx1);
+	while (val < 20)	{
+		std::cout << val << "t1 ";
+		val++;
+	}
+	ul.unlock();
+}
+```
+```
+void function2(){
+	std::unique_lock<std::mutex> ul(mx2);
+	while (val < 20)	{
+		std::cout << val << "t2 ";
+		val++;
+	}
+	ul.unlock();
+}
+```
+output : 00t1, 1t1, 2t1, 3t2,4t2....9t1  <br>
+It is random depending upon any thread incrementing th eglobal value.  <br>
+
+
+
 
 # Lock_Guard Types
 
