@@ -533,3 +533,5 @@ A std::shared_future works the same way, except it is copyable. Which means that
 
 - ```std::promise``` stores a value in an asynchronous operation which is later acquired by ```std::future```
 - Every ```promise``` is associated with ```future```
+- so unless ```.set()``` has been done on a promise, your ```.get()``` will be blocked on future
+
