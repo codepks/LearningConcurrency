@@ -531,7 +531,13 @@ A std::shared_future works the same way, except it is copyable. Which means that
 
 ## Promises
 
+
 - ```std::promise``` stores a value in an asynchronous operation which is later acquired by ```std::future```
 - Every ```promise``` is associated with ```future```
 - so unless ```.set()``` has been done on a promise, your ```.get()``` will be blocked on future
 
+## Future
+
+**Shared Future**
+
+ Each future's ```get()``` method can only be called once. If you want a future that can be accessed multiple times, use a shared_future instead
