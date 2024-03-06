@@ -638,7 +638,16 @@ Potentially runs on the **same thread** as the caller
 std::future<int> future1 = std::async(produceValue);
 ```
 
-Explicitly runs on **a separate thread**
+Explicitly runs on a **separate thread**
 ```
 std::future<int> future = std::async(std::launch::async, produceValue);
 ```
+
+## Launch Policies
+
+
+## My Notes
+
+## Coroutines
+
+## Udemy course insights
