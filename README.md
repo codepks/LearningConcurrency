@@ -847,8 +847,3 @@ auto future = std::async(std::launch::async, some_function, arg_1, arg_2);
 - Passing **function object**
 - Passing **lambda object**
 
-## My Notes
-
-## Coroutines
-
-## Udemy course insights
