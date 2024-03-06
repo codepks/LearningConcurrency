@@ -590,10 +590,6 @@ int main()
 **CODE SAMPLE 2 - without promise**
 
 ```
-#include <iostream>
-#include <thread>
-#include <future>
-
 void produceValue(std::promise<int>& promise) {
    // Simulate some work
    std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -621,3 +617,4 @@ int main() {
 }
 
 ```
+
