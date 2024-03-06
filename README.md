@@ -632,6 +632,13 @@ int main() {
 - For more intensive tasks it can run task on another thread
 - To guarantee that a task runs on a separate thread, use the ```std::launch::async``` policy when calling ```std::async```
 
+
+Potentially runs on the same thread as the caller
+```
+std::future<int> future1 = std::async(produceValue);
+```
+
+Explicitly runs on the same thread
 ```
 std::future<int> future = std::async(std::launch::async, produceValue);
 ```
