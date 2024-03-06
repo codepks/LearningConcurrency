@@ -126,6 +126,38 @@ Consumed: 5
 
 ```
 
+# Race Condition
+
+```
+std::mutex mx;
+
+void function()
+{
+	static int val = 0;
+	while (val < 20)
+	{
+		std::cout << val << " ";
+		val++; //without lock guard it has issues
+	}
+}
+
+int main()
+{
+	std::thread myThread1(function);
+	std::thread myThread2(function);
+
+	myThread1.join();
+	myThread2.join();
+}
+```
+
+**.join()**
+mythread1 and mythread2 have spawned from main thread, that's why main thread has to wait until both the threads complete their respective jobs
+
+```
+output:
+00 1 2 3 4 5 6 7 8 9 10  12 13 14 11 16 15 18 19 17
+```
 
 # Concurrency and Parallelism <br>
 source : https://github.com/methylDragon/coding-notes/blob/master/C++/07%20C++%20-%20Threading%20and%20Concurrency.md
