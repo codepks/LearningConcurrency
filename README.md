@@ -620,3 +620,14 @@ int main() {
 
 ```
 
+# std::async
+
+- It is helpful in case of spawning threads.
+- calls to ```std::async``` return a ```std::future``` object
+
+## Achieiving parallelism
+
+```std::async``` supports parallism but it can vary 
+- It might run on the same thread if there are limited thread resources available.
+- For more intensive tasks it can run task on another thread
+- To guarantee that a task runs on a separate thread, use the ```std::launch::async``` policy when calling ```std::async```
