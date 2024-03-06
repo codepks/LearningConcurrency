@@ -160,7 +160,7 @@ output:
 ```
 
 # Concurrency and Parallelism <br>
-source : https://github.com/methylDragon/coding-notes/blob/master/C++/07%20C++%20-%20Threading%20and%20Concurrency.md
+> source : https://github.com/methylDragon/coding-notes/blob/master/C++/07%20C++%20-%20Threading%20and%20Concurrency.md
 
 **Concurrency** <br>
 - When tasks are run simultaneously but not necessarily at the same physical time. <br>
@@ -213,7 +213,8 @@ std::thread ref_function_thread(ref_function, std::ref(val), 2);
 
 ## thread_local
 
-source : https://www.geeksforgeeks.org/thread_local-storage-in-cpp-11/
+> source : https://www.geeksforgeeks.org/thread_local-storage-in-cpp-11/
+
 thread_local are like static variables for threads and exists till the threads exists.
 
 better usage: 
@@ -249,7 +250,8 @@ One must make sure that its destructor is not called when it is still joinable (
 <br> 
 If you have not detached or joined then it will call std::terminate <br>
 Most commonly, you should use join to ensure proper thread termination and resource cleanup, especially for critical tasks. <br>
-source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
+
+> source : https://stackoverflow.com/questions/27392743/c11-what-happens-if-you-dont-call-join-for-stdthread
 
 
 ## Kill a thread
