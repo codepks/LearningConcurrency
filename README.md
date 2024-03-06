@@ -517,3 +517,19 @@ Use threads if:
 Use tasks if:
 - You want fairly simple code and don't care for managing threads
 - Are running short tasks
+
+# Promises and Futures
+
+## Futures
+- future variables are class template that will asssigned value in future and values to it are acessed via .get() . 
+- .get() function blocks the current thread until the value is retrieved
+- values to futures are assigned by asynchronous operations like ```std::async```, ```std::packaged_task``` and ```std::promise```
+
+## Shared Futures
+
+A std::shared_future works the same way, except it is copyable. Which means that multiple threads are allowed to wait for the same shared state.
+
+## Promises
+
+- ```std::promise``` stores a value in an asynchronous operation which is later acquired by ```std::future```
+- Every ```promise``` is associated with ```future```
