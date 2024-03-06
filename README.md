@@ -527,7 +527,8 @@ Use tasks if:
 
 ## Shared Futures
 
-A std::shared_future works the same way, except it is copyable. Which means that multiple threads are allowed to wait for the same shared state.
+A std::shared_future works the same way, except it is copyable. Which means that multiple threads are allowed to wait for the same shared state. <br>
+They are introduced more likely because of the issue of return value with ```std::thread```
 
 ## Promises
 
@@ -555,13 +556,10 @@ A std::shared_future works the same way, except it is copyable. Which means that
 >  - If unsuccessful, the promise is rejected with an error, and the future might indicate the error state.
 >  - Code that needs the result can wait on the future or check its status to retrieve the final value.
 
+**CODE SAMPLE 1**
 ```
 // Source: https://thispointer.com//c11-multithreading-part-8-stdfuture-stdpromise-and-returning-values-from-thread/
 
-#include <iostream>
-#include <thread>
-#include <future>
- 
 void initiazer(std::promise<int> * promObj)
 {
     std::cout<<"Inside Thread"<<std::endl;
@@ -587,4 +585,39 @@ int main()
     th.join();
     return 0;
 }
+```
+
+**CODE SAMPLE 2 - without promise**
+
+```
+#include <iostream>
+#include <thread>
+#include <future>
+
+void produceValue(std::promise<int>& promise) {
+   // Simulate some work
+   std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+   // Set the value of the promise
+   promise.set_value(10);
+}
+
+int main() {
+   std::promise<int> promise;
+   // Use a regular future for this example
+   // (You can explore shared futures later)
+   std::future<int> future = promise.get_future();
+
+   std::thread workerThread(produceValue, std::ref(promise));
+
+   // Main thread waits for the value from the future
+   int val = future.get(); // Blocks until the promise is set
+
+   std::cout << "Value received: " << val << std::endl;
+
+   workerThread.join(); // Ensure the worker thread finishes
+
+   return 0;
+}
+
 ```
