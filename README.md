@@ -531,13 +531,60 @@ A std::shared_future works the same way, except it is copyable. Which means that
 
 ## Promises
 
-
+- It is a writable container
 - ```std::promise``` stores a value in an asynchronous operation which is later acquired by ```std::future```
 - Every ```promise``` is associated with ```future```
 - so unless ```.set()``` has been done on a promise, your ```.get()``` will be blocked on future
 
 ## Future
 
+- A future acts like a read-only handle to the eventual result of a promise.
+- Future and promises work on *pair* basis and are associate to each other
+
 **Shared Future**
 
  Each future's ```get()``` method can only be called once. If you want a future that can be accessed multiple times, use a shared_future instead
+
+ ## Work flow
+
+> - A promise is created.
+>  - An asynchronous operation (e.g., network request, file I/O) is initiated.
+>  - The future is associated with the promise.
+>  - When the operation finishes:
+>  - If successful, the promise is resolved with the result, and the future can now be used to access the value.
+>  - If unsuccessful, the promise is rejected with an error, and the future might indicate the error state.
+>  - Code that needs the result can wait on the future or check its status to retrieve the final value.
+
+```
+// Source: https://thispointer.com//c11-multithreading-part-8-stdfuture-stdpromise-and-returning-values-from-thread/
+
+#include <iostream>
+#include <thread>
+#include <future>
+ 
+void initiazer(std::promise<int> * promObj)
+{
+    std::cout<<"Inside Thread"<<std::endl;
+
+    // 4. set the value to the promise
+    promObj->set_value(35);
+}
+ 
+int main()
+{
+    //1. create a promise
+    std::promise<int> promiseObj;
+
+    //2. associate a future to the proimse
+    std::future<int> futureObj = promiseObj.get_future();
+
+    //3. send the promise to a separate thread
+    std::thread th(initiazer, &promiseObj);
+
+    //4. obtain the future 
+    std::cout<<futureObj.get()<<std::endl;
+
+    th.join();
+    return 0;
+}
+```
