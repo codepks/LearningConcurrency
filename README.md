@@ -427,6 +427,55 @@ guard.try_lock_for(); // Only for timed_mutexes
 guard.try_lock_until(); // Only for timed_mutexes
 ```
 
+### Code Sample
+
+**NON PARAMETERISED STANDARD** <br> : unique_lock if not parameterised behaves like a lock_guard
+
+```
+void function() {
+	std::unique_lock<std::mutex> ul(mx);
+
+	static int val = 0;
+	while (val < 20)	{
+		std::cout << val << " ";
+		val++;
+	}
+}
+```
+
+**UNLOCK EXPLICITLY** : you can unlock the code explicitly
+
+```
+void function(){
+	std::unique_lock<std::mutex> ul(mx);
+
+	static int val = 0;
+	while (val < 20)	{
+		std::cout << val << " ";
+		val++;
+	}
+	ul.unlock();   //explicit unlocking
+}
+```
+
+**DELAY LOCKING** : you can delay the locking and later you can unlock
+
+```
+void function(){
+	std::unique_lock<std::mutex> ul(mx, std::defer_lock); //additional behaviour
+
+	ul.lock(); //delay locking
+
+	static int val = 0;
+	while (val < 20)	{
+		std::cout << val << " ";
+		val++;
+	}
+	ul.unlock();
+}
+```
+
+
 ## share_lock 
 
 Just like unique lock except that it works for **shared_mutex**
