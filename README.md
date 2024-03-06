@@ -644,7 +644,16 @@ std::future<int> future = std::async(std::launch::async, produceValue);
 ```
 
 ## Launch Policies
+3 ways to launch an ```std::async``` task: <br>
 
+- ```std::launch::async``` : Guarantees launch in a separate thread
+- ```std::launch::deferred``` : Function will only be called on get()
+- ```std::launch::async | std::launch::deferred``` : Default behaviour. Defer to system.
+I like to run async tasks with the ```std::launch::async``` profile so I can have some semblance of control over the threads. Just add it in as the first argument!
+
+```
+auto future = std::async(std::launch::async, some_function, arg_1, arg_2);
+```
 
 ## My Notes
 
