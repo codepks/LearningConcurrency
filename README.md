@@ -394,7 +394,7 @@ OR <br>
 
 
 
-**DIFFERENT LOCKS**
+**DIFFERENT LOCKS**  <br>
 If two different locks are put then both the threads acquire their respective locks and keep running the function until the condition is met.
 
 ```
@@ -642,6 +642,20 @@ Used with ```try_lock_for()``` and ```try_lock_until()```
 # Condition Variables
 For signal even handling
 
+```
+ cv.wait(ul, []() { return val >= 10; });
+```
+
+- ul is a unique_lock over here
+- next parameter is a Predicate class as per cpp reference whose signature should be like  bool pred(); , that's why we use lambda function here.
+
+## Working
+- I think it's a good rule of thumb to avoid holding the lock associated with a condition variable while calling notify_one() or notify_all().
+- Keep in mind that the lock() call in the while loop is necessary at some point, because the lock needs to be held during the while (!done) loop condition check. But it doesn't need to be held for the call to notify_one().
+
+
+> source : https://stackoverflow.com/questions/17101922/do-i-have-to-acquire-lock-before-calling-condition-variable-notify-one
+
 **Example Flow**
 > - Thread acquires lock
 > - Check if condition is false
@@ -692,6 +706,9 @@ They are introduced more likely because of the issue of return value with ```std
 - future variables are class template that will asssigned value in future and values to it are acessed via .get() . 
 - .get() function blocks the current thread until the value is retrieved
 - values to futures are assigned by asynchronous operations like ```std::async```, ```std::packaged_task``` and ```std::promise```
+
+- Use std::future::get() when you want to retrieve the result of the asynchronous task and are ready to block the calling thread until the result is available.
+- Use std::future::wait() when you want to wait for the asynchronous task to be ready but don't need the result immediately. It allows the calling thread to continue with other work while periodically checking the status of the task.
 
 ## Shared Futures
 
