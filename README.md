@@ -362,15 +362,31 @@ thread_function(){
 
 ## lock_guard
 Releases lock once it goes out of scope.
+
 ```
-std::mutex my_mutex;
- 
-thread_function()
-{
-  std::lock_guard<std::mutex> guard(my_mutex); // Acquire lock
-  // Do some non-thread safe stuff...
+std::mutex mx;
+
+void function()	{
+	std::lock_guard<std::mutex> lg(mx); //single line solution
+	static int val = 0;
+	while (val < 20)	{
+		std::cout << val << " ";
+		val++; //without lock guard it has issues
+	}
+}
+
+int main(){
+	std::thread myThread1(function);
+	std::thread myThread2(function);
+
+	myThread1.join();
+	myThread2.join();
 }
 ```
+
+**EXPLAINATION:** 
+Lock guard goes for detruction once it goes out of scope.
+
 
 ## scoped_lock
 From C++ 17 <br>
