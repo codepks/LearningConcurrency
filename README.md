@@ -643,7 +643,7 @@ Explicitly runs on a **separate thread**
 std::future<int> future = std::async(std::launch::async, produceValue);
 ```
 
-## Launch Policies
+## Launching std::async
 3 ways to launch an ```std::async``` task: <br>
 
 - ```std::launch::async``` : Guarantees launch in a separate thread
@@ -654,6 +654,13 @@ I like to run async tasks with the ```std::launch::async``` profile so I can hav
 ```
 auto future = std::async(std::launch::async, some_function, arg_1, arg_2);
 ```
+
+## Different ways to call std::async
+
+- Passing **function pointer**
+- Passing **function reference**
+- Passing **function object**
+- Passing **lambda object**
 
 ## My Notes
 
